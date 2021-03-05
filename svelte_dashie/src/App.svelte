@@ -121,7 +121,7 @@ const login = () => {
     });
   }
 
-	const deletepost = (id,author_role) => {
+	const deletepost = (id) => {
     fetch("http://localhost:5000/post", {
       method: "DELETE",
       headers: {

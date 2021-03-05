@@ -2,17 +2,17 @@
 
 ### How To Run
 
-Run Flask:
+Run Flask API:
 
 ```sh
 $ cd flask_api
-$ python3.9 -m venv env
+$ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
-$ python app.py
+$ python run.py
 ```
 
-Run Svelte:
+Run Svelte Front-end:
 
 ```sh
 $ cd svelte_dashie
