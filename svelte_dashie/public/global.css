@@ -1,0 +1,97 @@
+body {
+  background: #fafafa;
+  font-family: 'Open Sans', sans-serif;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color:#ce9468;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #f0dfd1 ;
+  cursor: pointer;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+  transition: 0.5s;
+  
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #ce9468;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+
+/*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
+.btn {
+  color: #fff;
+  background-color:#ce9468;
+  border-color: #ce9468; /*set the color you want here*/
+}
+.btn:hover, .btn:focus, .btn:active, .btn.active, .open>.dropdown-toggle.btn {
+  color: #333;
+  background-color: #f0dfd1;
+  border-color: #f0dfd1; /*set the color you want here*/
+
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.col-md-8 {
+  max-width: 100%
+}

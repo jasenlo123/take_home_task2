@@ -1,32 +1,23 @@
-# take_home_task
-
+# take_home_task2
 
 ### How To Run
-1. Install `virtualenv`:
-```
-$ pip install virtualenv
-```
 
-2. Open a terminal in the project root directory and run:
-```
-$ virtualenv env
-```
+Run Flask:
 
-3. Then run the command:
- (for mac)
-```
-$  source env/bin/activate 
-```
- (for windows)
-```
-$  source env/Scripts/activate.bat
-```
-
-4. Then install the dependencies:
-```
+```sh
+$ cd flask_api
+$ python3.9 -m venv env
+$ source env/bin/activate
 $ pip install -r requirements.txt
+$ python app.py
 ```
 
-5. Finally start the web server:
+Run Svelte:
+
+```sh
+$ cd svelte_dashie
+$ npm install
+$ npm run dev
 ```
-$ python run.py
+
+Test at [http://localhost:8080/](http://localhost:8080/)
