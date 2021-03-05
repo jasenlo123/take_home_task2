@@ -2,7 +2,7 @@
 Hello! This is a second implementation of the task requirements. The front-end is built in Svelte, and the RESTful API is implemented in Flask. I'm very new to Svelte, so I didn't manage to organise the code base very cleanly, unfortunately.
 
 ### How To Run
-**Requires npm, pip and python*
+**Requires npm, pip and python**
 
 Run Flask API:
 
