@@ -55,7 +55,7 @@ def login():
     user = User.query.filter_by(email=email).first()
     if user and bcrypt.check_password_hash(user.password, password):
       login_user(user)
-      return jsonify({"login": True})
+      return jsonify({"login": True,"role":user.role,"author":user.name})
 
     else:
       return jsonify({"login": False})

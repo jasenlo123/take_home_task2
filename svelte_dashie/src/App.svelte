@@ -4,17 +4,19 @@
 	let csrfToken;
 	let email;
 	let password;
-	let name;
-	let post_data = [];
-	let post_content;
-	let post_title;
+	let postData = [];
+	let postContent;
+	let postTitle;
 	let create = true;
 	let message = "You have been logged in."
 	let category = "success"
 
-	let edit_post_id = 0
-	let edit_post_title = ""
-	let edit_post_content = ""
+	let editPostID = 0
+	let editPostTitle = ""
+	let editPostContent = ""
+
+	let role = ""
+	let author = ""
 
 
 
@@ -29,6 +31,7 @@
       if (data.login == true) {
         isAuthenticated = true;
 				getposts();
+				csrf();
       } else {
         isAuthenticated = false;
         csrf();
@@ -45,7 +48,6 @@ const csrf = () => {
 	})
 	.then((res) => {
 		csrfToken = res.headers.get(["X-CSRFToken"])
-		console.log(csrfToken)
 	})
 	.catch((err) => {
 		console.log(err);
@@ -66,10 +68,12 @@ const login = () => {
     })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.login == true) {
         isAuthenticated = true;
 				getposts();
+				role = data.role
+				author = data.author
+				console.log(role,author)
       }
     })
     .catch((err) => {
@@ -88,8 +92,7 @@ const login = () => {
     })
     .then((res) => res.json())
     .then((data) => {
-			post_data = data
-			console.log(post_data)
+			postData = data
     })
     .catch((err) => {
       console.log(err);
@@ -97,8 +100,6 @@ const login = () => {
   };
 
 	const createpost = () => {
-		console.log(JSON.stringify({ title: post_title, content: post_content}))
-		console.log()
     fetch("http://localhost:5000/post", {
       method: "POST",
       headers: {
@@ -107,14 +108,15 @@ const login = () => {
         "X-CSRFToken": csrfToken
       },
       credentials: "include",
-      body: JSON.stringify({ title: post_title, content: post_content}),
+      body: JSON.stringify({ title: postTitle, content: postContent}),
     })
     .then((res) => res.json())
     .then((data) => {
       message = "Your post has been published!"
+			category = "success"
 			getposts()
-			post_title = ""
-			post_content = ""
+			postTitle = ""
+			postContent = ""
     })
     .catch((err) => {
       console.log(err);
@@ -135,6 +137,7 @@ const login = () => {
     .then((res) => res.json())
     .then((data) => {
 			message = "Your post has been deleted!"
+			category = "success"
 			getposts()
     })
     .catch((err) => {
@@ -143,8 +146,8 @@ const login = () => {
   }
 
 	const updatepost = (id,title,content) => {
-		post_title = title
-		post_content = content
+		postTitle = title
+		postContent = content
     fetch("http://localhost:5000/post", {
       method: "PUT",
       headers: {
@@ -153,14 +156,15 @@ const login = () => {
         "X-CSRFToken": csrfToken
       },
       credentials: "include",
-      body: JSON.stringify({ id:id, title: post_title, content: post_content}),
+      body: JSON.stringify({ id:id, title: postTitle, content: postContent}),
     })
     .then((res) => res.json())
     .then((data) => {
 			message = "Your messege has been updated!"
 			getposts()
-			post_title = ""
-			post_content = ""
+			category = "success"
+			postTitle = ""
+			postContent = ""
     })
     .catch((err) => {
       console.log(err);
@@ -220,15 +224,15 @@ const login = () => {
 		
 		
 			<!-- dashboard-->
-		{#if post_data.length < 1}
+		{#if postData.length < 1}
 			<article class="media content-section">
 				<div class="media-body">
-						<h1>No posts yet! Create one up above.</h1>
+						<h1>No posts yet.</h1>
 				</div>
 			</article>
 
 		{:else}
-			{#each post_data as post }
+			{#each postData as post }
 			<article class="media content-section">
 				<div class="media-body">
 					<div class="article-metadata">
@@ -237,18 +241,38 @@ const login = () => {
 					</div>
 					<h2 class="article-title">{ post.title }</h2>
 					<p class="article-content">{ post.content }</p>
+
+					{#if role == "Admin"}
+					<!-- buttons -->
 					<button class="btn btn-secondary btn-sm mt-1 mb-1" on:click={() => {
 						create = !create
-						edit_post_id = post.id
-						edit_post_title = post.title
-						edit_post_content = post.content
+						editPostID = post.id
+						editPostTitle = post.title
+						editPostContent = post.content
 						message = "Edit your messege before you republish it!"
+						category = "info"
 						}}>
 						Edit
 					</button>
 					<button class="btn btn-danger btn-sm mt-1 mb-1" on:click={deletepost(post.id,post.author_role)}>
 						Delete
-				</button>
+					</button>
+					{:else if author == post.author_name}
+					<button class="btn btn-secondary btn-sm mt-1 mb-1" on:click={() => {
+						create = !create
+						editPostID = post.id
+						editPostTitle = post.title
+						editPostContent = post.content
+						message = "Edit your messege before you republish it!"
+						category = "info"
+						}}>
+						Edit
+					</button>
+					<button class="btn btn-danger btn-sm mt-1 mb-1" on:click={deletepost(post.id,post.author_role)}>
+						Delete
+					</button>
+					{/if}
+
 				</div>
 			</article>
 			{/each}
@@ -262,11 +286,11 @@ const login = () => {
 				<fieldset class="form-group">
 					<div class="form-group">
 						<label class="form-control-label" for="title">Title: </label>
-						<input class="form-control form-control-lg" id = "title" bind:value={post_title} />
+						<input class="form-control form-control-lg" id = "title" bind:value={postTitle} />
 		
 		
 						<label class="form-control-label" for="content">Content: </label>
-						<input class="form-control form-control-lg" id = "content" bind:value={post_content} />
+						<input class="form-control form-control-lg" id = "content" bind:value={postContent} />
 					</div>
 					<div class="form-group">
 						<button class="btn btn-outline-info" on:click={createpost}>
@@ -279,14 +303,14 @@ const login = () => {
 					<fieldset class="form-group">
 						<div class="form-group">
 							<label class="form-control-label" for="title">Title: </label>
-							<input class="form-control form-control-lg" id = "title" bind:value={edit_post_title} />
+							<input class="form-control form-control-lg" id = "title" bind:value={editPostTitle} />
 							<label class="form-control-label" for="content">Content: </label>
-							<input class="form-control form-control-lg" id = "content" bind:value={edit_post_content} />
+							<input class="form-control form-control-lg" id = "content" bind:value={editPostContent} />
 						</div>
 						<div class="form-group">
 							<button class="btn btn-outline-info" on:click={() => {
 								create = !create
-								updatepost(edit_post_id,edit_post_title,edit_post_content)
+								updatepost(editPostID,editPostTitle,editPostContent)
 								}}>Update
 							</button>
 						</div>
